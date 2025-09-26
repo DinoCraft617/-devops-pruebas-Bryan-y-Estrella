@@ -1,0 +1,33 @@
+name: Pruebas Automatizadas
+
+on: [push]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Configurar Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Instalar dependencias Python
+      run: |
+        pip install pytest requests
+
+    - name: Ejecutar pruebas Python
+      run: pytest tests/ --maxfail=1 --disable-warnings -q
+
+    - name: Instalar Node.js (requerido para Newman)
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+
+    - name: Instalar Newman (CLI Postman)
+      run: npm install -g newman
+
+    - name: Ejecutar pruebas funcionales con Newman
+      run: newman run test/PruebasFuncionales.postman_collection.json
