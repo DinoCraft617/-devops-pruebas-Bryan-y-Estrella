@@ -15,18 +15,17 @@ jobs:
         python-version: '3.10'
 
     - name: Instalar dependencias Python
-      run: |
-        pip install pytest requests
+      run: pip install pytest
 
     - name: Ejecutar pruebas Python
-      run: pytest tests/ --maxfail=1 --disable-warnings -q
+      run: pytest test/ --maxfail=1 --disable-warnings -q  # ← CORREGIDO: test/ en lugar de tests/
 
-    - name: Instalar Node.js (requerido para Newman)
+    - name: Instalar Node.js
       uses: actions/setup-node@v3
       with:
         node-version: '18'
 
-    - name: Instalar Newman (CLI Postman)
+    - name: Instalar Newman
       run: npm install -g newman
 
     - name: Ejecutar pruebas funcionales con Newman
